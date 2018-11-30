@@ -1,5 +1,5 @@
-from NoDak.services import PlayerServices, CardServices
-from NoDak.constants import PromptCopy
+from services import PlayerServices, CardServices, GameServices
+from constants import PromptCopy
 
 class Game(object):
 #ini player
@@ -9,15 +9,23 @@ class Game(object):
         self.pc = PromptCopy()
         self.ps = PlayerServices()
         self.cs = CardServices()
+        self.gs = GameServices()
 
     def start_game(self):
         print(self.pc.WELCOME)
-        get_deck = self.cs.shuffled_deck()
+        game_round = self.gs.get_round(current_round=1)
+        shuffle_list, deck_key = self.cs.shuffled_deck()
+        game_deck = self.cs.get_game_deck(shuffle_list=shuffle_list, deck_key=deck_key)
         player_count = self.ps.player_count()
         player_dict = self.ps.player_setup(player_count=player_count)
+        session = self.gs.session_store(player_count=player_count,
+                                        player_dict=player_dict,
+                                        game_round=game_round,
+                                        game_deck=game_deck)
         print(self.pc.LETS_BEGIN)
         input(self.pc.DEAL_READY)
-        self.cs.deal_cards()
+        self.cs.deal_cards(session=session)
+
 
 if __name__ == '__main__':
     game = Game()

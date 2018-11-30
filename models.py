@@ -65,32 +65,19 @@ class Deck(object):
             'master_key': {}}
 
 class Rounds(object):
-    rounds = {1: '1 Book',
-              2: '1 Run',
-              3: '2 Runs',
-              4: '3 Books',
-              5: '2 Books 1 Run',
-              6: '2 Runs 1 Book',
-              7: '2 Books 2 Runs',
-              8: '3 Runs'}
+    rounds = {1: ['1 Book', 10],
+              2: ['1 Run', 10],
+              3: ['2 Runs', 10],
+              4: ['3 Books', 10],
+              5: ['2 Books 1 Run', 12],
+              6: ['2 Runs 1 Book', 12],
+              7: ['2 Books 2 Runs', 12],
+              8: ['3 Runs', 12]}
 
 class Session(object):
-    def __init__(self):
-        self.player_count = 0
-        self.player_dict = {}
-        self.round = 1
-        self.deck_key = {}
-        self.shuffle_list = []
-        self.deck = {}
-
-    def session_store(self, player_count, player_dict, round, deck_key, shuffle_list):
-        self.player_count = player_count
-        self.player_dict = player_dict
-        self.round = round
-        self.deck_key = deck_key
-        self.shuffle_list = shuffle_list
-
-    def get_session(self):
-        return
+        player_count = 0
+        player_dict = {}
+        game_round = 1
+        game_deck = {}
 
 # ♦♣♠♥

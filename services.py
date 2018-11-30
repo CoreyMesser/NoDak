@@ -1,6 +1,6 @@
 from random import randrange
-from NoDak.models import Cards, Deck, Player, Session as session_store
-from NoDak.constants import PromptCopy
+from models import Cards, Deck, Player, Session, Rounds
+from constants import PromptCopy
 
 class CardServices(object):
     def __init__(self):
@@ -33,30 +33,31 @@ class CardServices(object):
         cards = Cards.cards
         sl = self.shuffle(deck=cards)
         ca = self.card_assigner(shuffled_list=sl, deck=cards)
-
-        session_store.shuffle_list = sl
-        session_store.deck_key = ca
-
         return sl, ca
 
-    def deal_cards(self):
-        num_players = session_store.player_count
-        player_dict = session_store.player_dict
-        shuffle_list = session_store.shuffle_list
-        # round = session_store.round
-        game_deck = self.deck.deck
+    def deal_cards(self, session):
+        player_dict = session.player_dict
+        game_deck = session.game_deck
+        game_round = session.game_round[1]
 
-        game_deck['remaining_cards'] = shuffle_list
-        game_deck['deck_key'] = session_store.deck_key
-
-        for player in player_dict:
-            player_dict[player]['hand'] = game_deck['remaining_cards'][0]
-            game_deck['remaining_cards'].pop(0)
-
-
-
+        while game_round > 0:
+            for player in player_dict:
+                hand = player_dict[player]['hand']
+                hand.append(game_deck['remaining_cards'][0])
+                game_deck['remaining_cards'].pop(0)
+            game_round -= 1
         return
 
+    def get_game_deck(self, shuffle_list, deck_key):
+        game_deck = self.deck.deck
+        game_deck['remaining_cards'] = shuffle_list
+        game_deck['deck_key'] = deck_key
+        return game_deck
+
+    def card_translator(self, session):
+        player_dict = session.player_dict
+        return
+    
     def place_card(self, card):
         return
 
@@ -90,19 +91,33 @@ class PlayerServices(object):
         # except:
         #     print(self.pc.NUMBERS_ONLY)
         #     self.player_count()
-
-        session_store.player_count = n
         return n
 
     def player_setup(self, player_count):
         players_dict = {}
         for n in range(0, player_count):
-            name = input(self.pc.PLAYER_NAME)
-            name = {name: self.pl.player}
-            players_dict.update(name)
-
-        session_store.player_dict = players_dict
+            name = input(self.pc.PLAYER_NAME + '{} >>> '.format(n+1))
+            player = {name: {'hand': [],
+                            'down': [],
+                            'score': 0}}
+            players_dict.update(player)
         return players_dict
+
+
+class GameServices(object):
+    session = Session()
+
+    def session_store(self, player_count, player_dict, game_round, game_deck):
+        self.session.player_count = player_count
+        self.session.player_dict = player_dict
+        self.session.game_round = game_round
+        self.session.game_deck = game_deck
+        return self.session
+
+    def get_round(self, current_round):
+        game_rounds = Rounds()
+        return game_rounds.rounds[current_round]
+
 
 
 
