@@ -165,7 +165,7 @@ class GameServices(object):
         # TRUE remove cards from hand and place in down
         # FALSE go to ask
         # IF/WHEN ask == no
-        # 
+        #
         # ask player which card they would like to discard
 
 
