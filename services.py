@@ -5,6 +5,7 @@ from constants import PromptCopy
 class CardServices(object):
     def __init__(self):
         self.deck = Deck()
+        self.card_dict = Cards()
 
     def shuffle_check(self, num, shuffled_list, deck_size):
         while num in shuffled_list:
@@ -54,18 +55,30 @@ class CardServices(object):
         game_deck['deck_key'] = deck_key
         return game_deck
 
-    def display_cards(self, session):
+    def display_cards(self, player, session):
         player_dict = session.player_dict
+        hand_list = []
+        placed_list = []
+        #check for placed cards player_dict[player][down]
+        for card in player_dict[player]['hand']:
+            hand_list.append(self.card_translator(session=session, card=card))
+
+        for placed in player_dict[player]['down']:
+            placed_list.append(self.card_translator(session=session, card=placed))
+
+        return hand_list, placed_list
+
+
+
 
     def card_translator(self, session, card):
-        deck_key = session.game_deck['deck_key'][card]
-
-        return
+        card_key = session.game_deck['deck_key'][card]
+        return self.card_dict.cards[card_key][0]
 
     def place_card(self, card):
         return
 
-    def discard_card(self, card):
+    def discard_card(self, session):
         return
 
     def take_card(self, pile, num):
@@ -111,6 +124,10 @@ class PlayerServices(object):
 class GameServices(object):
     session = Session()
 
+    def __init__(self):
+        self.cs = CardServices()
+        self.pc = PromptCopy()
+
     def session_store(self, player_count, player_dict, game_round, game_deck):
         self.session.player_count = player_count
         self.session.player_dict = player_dict
@@ -121,6 +138,38 @@ class GameServices(object):
     def get_round(self, current_round):
         game_rounds = Rounds()
         return game_rounds.rounds[current_round]
+
+    def display_table(self, session):
+        player_dict = session.player_dict
+        discard_pile = self.cs.discard_card(session=session)
+
+        print(self.pc.ROUND + ':: {}'.format(session.game_round))
+        print(self.pc.DISCARD_PILE + ':: {}'.format(session.game_deck['discard_pile']))
+        print(self.pc.SEPARATOR)
+
+        for player in player_dict:
+            print(self.pc.PLAYER + ':: {}'.format(player))
+            hand, down = self.cs.display_cards(session=session, player=player)
+            print(self.pc.HAND + ':: {}'.format(hand))
+            print(self.pc.DOWN + ':: {}'.format(down))
+            print(self.pc.SEPARATOR)
+
+    def get_turn(self, session, player):
+        # ask if player would like to buy discard
+        # check discard
+            # once a discard is dead it is returned to the remaining cards
+        # if player does not want discard a card is added to their hand from the top of the deck
+        # ask if player would like to report pairings
+        # allow the player to input pairing
+        # check player input
+        # TRUE remove cards from hand and place in down
+        # FALSE go to ask
+        # IF/WHEN ask == no
+        # 
+        # ask player which card they would like to discard
+
+
+        return
 
 
 

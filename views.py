@@ -25,6 +25,7 @@ class Game(object):
         print(self.pc.LETS_BEGIN)
         input(self.pc.DEAL_READY)
         self.cs.deal_cards(session=session)
+        self.gs.display_table(session=session)
 
 
 if __name__ == '__main__':
