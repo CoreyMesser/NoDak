@@ -46,7 +46,7 @@ class CardServices(object):
                 hand.append(game_deck['remaining_cards'][0])
                 game_deck['remaining_cards'].pop(0)
             game_round -= 1
-        return
+        return session
 
     def get_game_deck(self, shuffle_list, deck_key):
         game_deck = self.deck.deck
@@ -54,10 +54,14 @@ class CardServices(object):
         game_deck['deck_key'] = deck_key
         return game_deck
 
-    def card_translator(self, session):
+    def display_cards(self, session):
         player_dict = session.player_dict
+
+    def card_translator(self, session, card):
+        deck_key = session.game_deck['deck_key'][card]
+
         return
-    
+
     def place_card(self, card):
         return
 
