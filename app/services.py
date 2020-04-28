@@ -1,6 +1,6 @@
 from random import randrange
-from models import Cards, Deck, Player, Session, Rounds
-from constants import PromptCopy
+from app.models import Cards, Deck, Player, Session, Rounds
+from app.constants import PromptCopy
 
 class CardServices(object):
     def __init__(self):
