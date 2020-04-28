@@ -2,11 +2,11 @@ from services import PlayerServices, CardServices, GameServices
 from constants import PromptCopy
 from flask import Flask, render_template
 
-app = create_app()
+# app = create_app()
 
-@app.route('/')
-def home():
-    return '__Shanghai Bitches__'
+# @app.route('/')
+# def home():
+#     return '__Shanghai Bitches__'
 
 class Game(object):
 #ini player
@@ -34,7 +34,7 @@ class Game(object):
         self.cs.deal_cards(session=session)
         self.gs.display_table(session=session)
 
-#
-# if __name__ == '__main__':
-#     game = Game()
-#     game.start_game()
+
+if __name__ == '__main__':
+    game = Game()
+    game.start_game()

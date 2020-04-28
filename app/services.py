@@ -2,10 +2,9 @@ from random import randrange
 from app.models import Cards, Deck, Player, Session, Rounds
 from app.constants import PromptCopy
 
-class CardServices(object):
+class CardServices(Cards, Deck):
     def __init__(self):
-        self.deck = Deck()
-        self.card_dict = Cards()
+        pass
 
     def shuffle_check(self, num, shuffled_list, deck_size):
         while num in shuffled_list:
@@ -50,7 +49,7 @@ class CardServices(object):
         return session
 
     def get_game_deck(self, shuffle_list, deck_key):
-        game_deck = self.deck.deck
+        game_deck = Deck().deck
         game_deck['remaining_cards'] = shuffle_list
         game_deck['deck_key'] = deck_key
         return game_deck
@@ -68,12 +67,9 @@ class CardServices(object):
 
         return hand_list, placed_list
 
-
-
-
     def card_translator(self, session, card):
         card_key = session.game_deck['deck_key'][card]
-        return self.card_dict.cards[card_key][0]
+        return Cards().cards[card_key][0]
 
     def place_card(self, card):
         return
