@@ -15,3 +15,10 @@ class PromptCopy(object):
     PLAYER_NAME = "Please enter a name for Player"
     PLAYER_NAME_CORRECT = "Is this name correct? Y/N"
     SEPARATOR = '♦♣♠♥=============♦♣♠♥\n'
+
+class DeckCopy(object):
+    CARDWELLTITLE = "♦♣♠♥=====CARD WELL=====♦♣♠♥"
+    CARDWELLDISCARD = "vvDISCARDvv"
+    CARDWELLDECK = ">>DECK<<"
+    CARDWELLDECKICON = "[=]"
+    CADWELLDISPLAY = CARDWELLTITLE + '\n' + CARDWELLDISCARD + CARDWELLDECK + '\n'

@@ -1,6 +1,6 @@
 from random import randrange
-from app.models import Cards, Deck, Player, Session, Rounds
-from app.constants import PromptCopy
+from models import Cards, Deck, Player, Session, Rounds
+from constants import PromptCopy, DeckCopy
 
 class CardServices(Cards, Deck):
     def __init__(self):
@@ -32,7 +32,8 @@ class CardServices(Cards, Deck):
     def shuffled_deck(self):
         cards = Cards.cards
         sl = self.shuffle(deck=cards)
-        ca = self.card_assigner(shuffled_list=sl, deck=cards)
+        # ca = self.card_assigner(shuffled_list=sl, deck=cards)
+        ca = cards
         return sl, ca
 
     def deal_cards(self, session):
@@ -69,7 +70,17 @@ class CardServices(Cards, Deck):
 
     def card_translator(self, session, card):
         card_key = session.game_deck['deck_key'][card]
-        return Cards().cards[card_key][0]
+        return card_key[0]
+
+    def display_well(self, session):
+        dc = DeckCopy()
+        deck = session['game_deck']
+        return print(f'{deck["remaining"]}' + '||' + dc.CARDWELLDECKICON)
+
+    def update_discard(self, session):
+        if session['last_discard']['card'] == 0 and session['last_discard']['player'] == '':
+            session['discard_pile'].append(session['game_deck']['remaining_cards'][0])
+            session['game_deck']['remaining_cards'].pop(0)
 
     def place_card(self, card):
         return
@@ -135,6 +146,17 @@ class GameServices(object):
         game_rounds = Rounds()
         return game_rounds.rounds[current_round]
 
+    def start_round(self, session):
+
+        self.get_turns(session=session)
+
+    def get_turns(self, session):
+        turns = []
+        players = session['player_dict']
+        for player in players.keys():
+            turns.append(player)
+        session['turns'] = turns
+
     def display_table(self, session):
         player_dict = session.player_dict
         discard_pile = self.cs.discard_card(session=session)
@@ -150,7 +172,11 @@ class GameServices(object):
             print(self.pc.DOWN + ':: {}'.format(down))
             print(self.pc.SEPARATOR)
 
+    def display_well(self, session):
+        self.cs.display_well(session=session)
+
     def get_turn(self, session, player):
+        # display deck
         # ask if player would like to buy discard
         # check discard
             # once a discard is dead it is returned to the remaining cards

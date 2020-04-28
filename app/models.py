@@ -1,5 +1,6 @@
 class Cards(object):
-    cards = {1: ["2♥", 5],
+    cards = {0: ["#", 0],
+             1: ["2♥", 5],
              2: ["3♥", 5],
              3: ["4♥", 5],
              4: ["5♥", 5],
@@ -61,6 +62,8 @@ class Player(object):
 
 class Deck(object):
     deck = {'remaining_cards': [],
+            'last_discard': {'card': 0,
+                             'player': ''},
             'discard_pile': [],
             'master_key': {}}
 
