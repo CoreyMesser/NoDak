@@ -6,6 +6,24 @@ class CardServices(Cards, Deck):
     def __init__(self):
         pass
 
+    def build_deck(self, session):
+        cs = Cards()
+        num_decks = session.num_decks
+        card_counter = 0
+        card_model = cs.card_model
+        game_deck = {0: card_model}
+        while num_decks > 0:
+            suits = cs.card_suit
+            for suit in suits:
+                card_rank_num = len(cs.card_ranks_num)
+                card_rank_face = len(cs.card_ranks_face)
+                card_rank_sp = len(cs.card_ranks_sp)
+                while card_rank_num > 0:
+                    card_counter += 1
+                    game_deck[card_counter] = card_model['card']
+
+
+
     def shuffle_check(self, num, shuffled_list, deck_size):
         while num in shuffled_list:
             num = randrange(0, deck_size)
@@ -74,13 +92,19 @@ class CardServices(Cards, Deck):
 
     def display_well(self, session):
         dc = DeckCopy()
-        deck = session['game_deck']
-        return print(f'{deck["remaining"]}' + '||' + dc.CARDWELLDECKICON)
+        deck = session.game_deck
+        return print(f'{deck["discard_pile"][-1]}' + '||' + dc.CARDWELLDECKICON)
 
-    def update_discard(self, session):
-        if session['last_discard']['card'] == 0 and session['last_discard']['player'] == '':
-            session['discard_pile'].append(session['game_deck']['remaining_cards'][0])
-            session['game_deck']['remaining_cards'].pop(0)
+    def update_discard(self, session, last_discard=None):
+        if session.game_deck['last_discard']['card'] == 0 and session.game_deck['last_discard']['player'] == '':
+            #first time through
+            session.game_deck['discard_pile'].append(session.game_deck['remaining_cards'][0])
+            session.game_deck['remaining_cards'].pop(0)
+        elif last_discard:
+            session.game_deck['discard_pile'].append(last_discard['card'])
+        elif not last_discard:
+            pass
+        return session
 
     def place_card(self, card):
         return
@@ -134,6 +158,7 @@ class GameServices(object):
     def __init__(self):
         self.cs = CardServices()
         self.pc = PromptCopy()
+        self.dc = DeckCopy()
 
     def session_store(self, player_count, player_dict, game_round, game_deck):
         self.session.player_count = player_count
@@ -147,35 +172,35 @@ class GameServices(object):
         return game_rounds.rounds[current_round]
 
     def start_round(self, session):
-
         self.get_turns(session=session)
 
     def get_turns(self, session):
         turns = []
-        players = session['player_dict']
+        players = session.player_dict
         for player in players.keys():
             turns.append(player)
         session['turns'] = turns
 
     def display_table(self, session):
         player_dict = session.player_dict
-        discard_pile = self.cs.discard_card(session=session)
-
-        print(self.pc.ROUND + ':: {}'.format(session.game_round))
-        print(self.pc.DISCARD_PILE + ':: {}'.format(session.game_deck['discard_pile']))
+        self.cs.update_discard(session=session)
+        print(self.pc.VSEPERATOR)
+        print(self.pc.ROUND + f':: {session.game_round}')
+        print(self.dc.CADWELLDISPLAY)
+        self.display_well(session=session)
         print(self.pc.SEPARATOR)
 
         for player in player_dict:
-            print(self.pc.PLAYER + ':: {}'.format(player))
+            print(self.pc.PLAYER + f':: {player}')
             hand, down = self.cs.display_cards(session=session, player=player)
-            print(self.pc.HAND + ':: {}'.format(hand))
-            print(self.pc.DOWN + ':: {}'.format(down))
+            print(self.pc.HAND + f':: {hand}')
+            print(self.pc.DOWN + f':: {down}')
             print(self.pc.SEPARATOR)
 
     def display_well(self, session):
         self.cs.display_well(session=session)
 
-    def get_turn(self, session, player):
+    def turn_loop(self, session, player):
         # display deck
         # ask if player would like to buy discard
         # check discard

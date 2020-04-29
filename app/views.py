@@ -36,10 +36,13 @@ class Game(object):
         return session
 
     def game_loop(self, session):
+        self.gs.get_turns(session=session)
 
-        pass
 
+    def game(self):
+        session = self.start_game()
+        self.game_loop(session=session)
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game()
+    game.game()

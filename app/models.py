@@ -1,4 +1,13 @@
 class Cards(object):
+    card_suit = ['♥', '♦', '♣', '♠']
+    card_ranks_num = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
+    card_ranks_face = ['J', 'Q', 'K', 'A']
+    card_ranks_sp = ['Jk']
+    card_values = [0, 5, 10, 25, 50]
+
+    card_model = {'card': {'suit': '', 'rank': ''},
+                  'value': 0}
+
     cards = {0: ["#", 0],
              1: ["2♥", 5],
              2: ["3♥", 5],
@@ -65,7 +74,8 @@ class Deck(object):
             'last_discard': {'card': 0,
                              'player': ''},
             'discard_pile': [],
-            'master_key': {}}
+            'master_key': {},
+            'num_decks': 3}
 
 class Rounds(object):
     rounds = {1: ['1 Book', 10],
