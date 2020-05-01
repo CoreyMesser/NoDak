@@ -17,6 +17,9 @@ class PromptCopy(object):
     SEPARATOR = '♦♣♠♥=============♦♣♠♥\n'
     VSEPERATOR = '\n \n \n'
 
+    PLAYER_FULL_CHOICES = ", would you like to: \n1. Buy from the deck [1]\n2. Take discard [2]\n3. Place Book [3]\n4. Place Run [4]\n5. Discard [5]"
+    PLAYER_DISCARD = "Discard please"
+
 class DeckCopy(object):
     CARDWELLTITLE = "♦♣♠♥=====CARD WELL=====♦♣♠♥"
     CARDWELLDISCARD = "vvDISCARDvv"

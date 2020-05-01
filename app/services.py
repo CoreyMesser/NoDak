@@ -139,7 +139,9 @@ class CardServices(Cards, Deck):
     def discard_card(self, session):
         return
 
-    def take_card(self, pile, num):
+    def take_card(self, session, pile):
+        # if pile discard take 1
+        # if pile deck take 2
         return
 
     def book_check(self, cards):
@@ -153,6 +155,11 @@ class CardServices(Cards, Deck):
         if session.game_round['round'] == 1:
             isfirst = True
         return isfirst
+
+    def first_round(self, session):
+        isactive = self.discard_active(session=session)
+        if not isactive:
+            session.game_deck['last_discard']['card'] = session.game_deck['discard_pile'][-1]
 
     def round_check(self):
         return
@@ -183,6 +190,40 @@ class PlayerServices(object):
                             'score': 0}}
             players_dict.update(player)
         return players_dict
+
+    def player_choices(self, session):
+        # buy card
+        # buy discard
+        # place book
+        # place run
+        # discard
+        player_choice = str(input(f"{session.turns['current_turn'][0]}" + self.pc.PLAYER_FULL_CHOICES))
+        if player_choice == '1' or player_choice == '[1]':
+            pile = 'deck'
+            self.cs.take_card(session=session, pile=pile)
+        elif player_choice == '2' or player_choice == '[2]':
+            pile = 'discard'
+            self.cs.take_card(session=session, pile=pile)
+        elif player_choice == '3' or player_choice == '[3]':
+            cards = self.player_card_choice(session=session)
+            # will need to parse the cards
+            self.cs.book_check(cards=cards)
+            # book fails player is notified
+            # book succeeds player is notified and scoring
+        elif player_choice == '4' or player_choice == '[4]':
+            cards = self.player_card_choice(session=session)
+            # will need to parse the cards
+            self.cs.run_check(cards=cards)
+            # book fails player is notified
+            # book succeeds player is notified and scoring
+        elif player_choice == '5' or player_choice == '[5]':
+            self.cs.discard_card(session=session)
+        else:
+            print(self.pc.TRY_AGAIN)
+
+    def player_card_choice(self, session):
+        # player chooses a number of cards to lay down as part of a book or a run
+        pass
 
 
 class GameServices(object):
@@ -238,6 +279,13 @@ class GameServices(object):
 
     def turn_loop(self, session):
         print(f"{session.turns['current_turn']} :")
+        # check if its the first round and assign the fresh discard to the pile
+        isfirst = self.cs.is_first_round(session=session)
+        if isfirst:
+            self.cs.discard_active(session=session)
+
+        # player options
+
         # display deck
         # ask if player would like to buy discard
         # check discard
