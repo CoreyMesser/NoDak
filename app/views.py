@@ -43,6 +43,7 @@ class Game(object):
         session = self.start_game()
         self.game_loop(session=session)
 
+
 if __name__ == '__main__':
     game = Game()
     game.game()

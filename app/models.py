@@ -1,7 +1,7 @@
 class Cards(object):
     card_suit = ['♥', '♦', '♣', '♠']
-    card_ranks_num = ['2', '3', '4', '5', '6', '7', '8', '9', '10']
-    card_ranks_face = ['J', 'Q', 'K', 'A']
+    card_ranks_num = ['2', '3', '4', '5', '6', '7', '8', '9']
+    card_ranks_face = ['10', 'J', 'Q', 'K', 'A']
     card_ranks_sp = ['Jk']
     card_values = [0, 5, 10, 25, 50]
 
@@ -90,7 +90,11 @@ class Rounds(object):
 class Session(object):
         player_count = 0
         player_dict = {}
-        game_round = 1
+        game_round = {'round': 1,
+                      'stage': []}
         game_deck = {}
+        turns = {'turns_list': [],
+                 'current_turn': [],
+                 'previous_turn': []}
 
 # ♦♣♠♥

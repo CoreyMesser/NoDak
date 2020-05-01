@@ -1,26 +1,47 @@
 from random import randrange
 from models import Cards, Deck, Player, Session, Rounds
 from constants import PromptCopy, DeckCopy
+from copy import deepcopy
 
 class CardServices(Cards, Deck):
     def __init__(self):
         pass
 
-    def build_deck(self, session):
+    def build_deck(self):
         cs = Cards()
-        num_decks = session.num_decks
+        num_decks = 3
         card_counter = 0
         card_model = cs.card_model
         game_deck = {0: card_model}
         while num_decks > 0:
             suits = cs.card_suit
             for suit in suits:
-                card_rank_num = len(cs.card_ranks_num)
-                card_rank_face = len(cs.card_ranks_face)
-                card_rank_sp = len(cs.card_ranks_sp)
-                while card_rank_num > 0:
+                for num_card in cs.card_ranks_num:
+                    card_model = deepcopy(cs.card_model)
                     card_counter += 1
-                    game_deck[card_counter] = card_model['card']
+                    card_model['card']['suit'] = suit
+                    card_model['card']['rank'] = num_card
+                    card_model['value'] = cs.card_values[1]
+                    game_deck[card_counter] = card_model
+                for face_card in cs.card_ranks_face:
+                    card_model = deepcopy(cs.card_model)
+                    card_counter += 1
+                    if face_card == 'A':
+                        card_model['value'] = cs.card_values[3]
+                    else:
+                        card_model['value'] = cs.card_values[2]
+                    card_model['card']['suit'] = suit
+                    card_model['card']['rank'] = face_card
+                    game_deck[card_counter] = card_model
+            for sp_card in cs.card_ranks_sp:
+                card_model = deepcopy(cs.card_model)
+                card_counter += 1
+                card_model['card']['suit'] = sp_card
+                card_model['card']['rank'] = sp_card
+                card_model['value'] = cs.card_values[4]
+                game_deck[card_counter] = card_model
+            num_decks -= 1
+        return game_deck
 
 
 
@@ -48,16 +69,15 @@ class CardServices(Cards, Deck):
         return shuffled_deck
 
     def shuffled_deck(self):
-        cards = Cards.cards
+        cards = self.build_deck()
         sl = self.shuffle(deck=cards)
-        # ca = self.card_assigner(shuffled_list=sl, deck=cards)
         ca = cards
         return sl, ca
 
     def deal_cards(self, session):
         player_dict = session.player_dict
         game_deck = session.game_deck
-        game_round = session.game_round[1]
+        game_round = session.game_round['stage'][1]
 
         while game_round > 0:
             for player in player_dict:
@@ -88,12 +108,13 @@ class CardServices(Cards, Deck):
 
     def card_translator(self, session, card):
         card_key = session.game_deck['deck_key'][card]
-        return card_key[0]
+        translated_card = card_key['card']['rank'] + card_key['card']['suit']
+        return translated_card
 
     def display_well(self, session):
         dc = DeckCopy()
         deck = session.game_deck
-        return print(f'{deck["discard_pile"][-1]}' + '||' + dc.CARDWELLDECKICON)
+        return print(f'{self.card_translator(session=session, card=deck["discard_pile"][-1])}' + '||' + dc.CARDWELLDECKICON)
 
     def update_discard(self, session, last_discard=None):
         if session.game_deck['last_discard']['card'] == 0 and session.game_deck['last_discard']['player'] == '':
@@ -109,6 +130,12 @@ class CardServices(Cards, Deck):
     def place_card(self, card):
         return
 
+    def discard_active(self, session):
+        isactive = False
+        if session.game_deck['last_dicscard']['card'] == session.game_deck['discard_pile'][-1]:
+             isactive = True
+        return isactive
+
     def discard_card(self, session):
         return
 
@@ -120,6 +147,12 @@ class CardServices(Cards, Deck):
 
     def run_check(self, cards):
         return
+
+    def is_first_round(self, session):
+        isfirst = False
+        if session.game_round['round'] == 1:
+            isfirst = True
+        return isfirst
 
     def round_check(self):
         return
@@ -169,17 +202,20 @@ class GameServices(object):
 
     def get_round(self, current_round):
         game_rounds = Rounds()
-        return game_rounds.rounds[current_round]
+
+        game_round = {'round': 1,
+                      'stage': game_rounds.rounds[current_round]}
+        return game_round
 
     def start_round(self, session):
         self.get_turns(session=session)
 
     def get_turns(self, session):
-        turns = []
         players = session.player_dict
         for player in players.keys():
-            turns.append(player)
-        session['turns'] = turns
+            session.turns['turns_list'].append(player)
+        session.turns['current_turn'].append(session.turns['turns_list'][0])
+        session.turns['previous_turn'].append(session.turns['turns_list'][-1])
 
     def display_table(self, session):
         player_dict = session.player_dict
@@ -200,7 +236,8 @@ class GameServices(object):
     def display_well(self, session):
         self.cs.display_well(session=session)
 
-    def turn_loop(self, session, player):
+    def turn_loop(self, session):
+        print(f"{session.turns['current_turn']} :")
         # display deck
         # ask if player would like to buy discard
         # check discard
