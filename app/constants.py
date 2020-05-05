@@ -4,6 +4,7 @@ class PromptCopy(object):
     TRY_AGAIN = "Try again ya Goober."
     LETS_BEGIN = "Now that there are names to faces lets get some cards in hands."
     DEAL_READY = "Press any key to shuffle and toss."
+    DISCARD_DEAD = "Discard is dead, gotta suck it up and buy from the deck."
 
     PLAYER = "Player"
     HAND = 'Hand'

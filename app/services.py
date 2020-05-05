@@ -132,7 +132,7 @@ class CardServices(Cards, Deck):
 
     def discard_active(self, session):
         isactive = False
-        if session.game_deck['last_dicscard']['card'] == session.game_deck['discard_pile'][-1]:
+        if session.game_deck['last_discard']['card'] == session.game_deck['discard_pile'][-1]:
              isactive = True
         return isactive
 
@@ -141,8 +141,12 @@ class CardServices(Cards, Deck):
 
     def take_card(self, session, pile):
         # if pile discard take 1
+        if pile == 'discard':
+            session.player_dict[session.turns['current_turn']]['hand'].append(session.game_deck['discard_pile'].pop(-1))
         # if pile deck take 2
-        return
+        elif pile == 'deck':
+            session.player_dict[session.turns['current_turn']]['hand'].append(session.game_deck['remaining_cards'].pop(-1))
+        return session
 
     def book_check(self, cards):
         return
@@ -191,6 +195,9 @@ class PlayerServices(object):
             players_dict.update(player)
         return players_dict
 
+    def _player_choice(self, session):
+        self.player_choices(session=session)
+
     def player_choices(self, session):
         # buy card
         # buy discard
@@ -203,7 +210,11 @@ class PlayerServices(object):
             self.cs.take_card(session=session, pile=pile)
         elif player_choice == '2' or player_choice == '[2]':
             pile = 'discard'
-            self.cs.take_card(session=session, pile=pile)
+            if self.cs.discard_active(session=session):
+                self.cs.take_card(session=session, pile=pile)
+            else:
+                print(self.pc.DISCARD_DEAD)
+                self._player_choice(session=session)
         elif player_choice == '3' or player_choice == '[3]':
             cards = self.player_card_choice(session=session)
             # will need to parse the cards
@@ -230,6 +241,7 @@ class GameServices(object):
     session = Session()
 
     def __init__(self):
+        self.ps = PlayerServices()
         self.cs = CardServices()
         self.pc = PromptCopy()
         self.dc = DeckCopy()
@@ -280,9 +292,11 @@ class GameServices(object):
     def turn_loop(self, session):
         print(f"{session.turns['current_turn']} :")
         # check if its the first round and assign the fresh discard to the pile
-        isfirst = self.cs.is_first_round(session=session)
-        if isfirst:
+        if self.cs.is_first_round(session=session):
+            self.cs.first_round(session=session)
             self.cs.discard_active(session=session)
+        self.ps.player_card_choice(session=session)
+        self.ps.player_choices(session=session)
 
         # player options
 

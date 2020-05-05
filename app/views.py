@@ -37,6 +37,7 @@ class Game(object):
 
     def game_loop(self, session):
         self.gs.get_turns(session=session)
+        self.gs.turn_loop(session=session)
 
 
     def game(self):
