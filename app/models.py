@@ -95,6 +95,7 @@ class Session(object):
         game_deck = {}
         turns = {'turns_list': [],
                  'current_turn': [],
-                 'previous_turn': []}
+                 'previous_turn': [],
+                 'stage': 1}
 
 # ♦♣♠♥

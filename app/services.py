@@ -94,14 +94,13 @@ class CardServices(Cards, Deck):
         return game_deck
 
     def display_cards(self, player, session):
-        player_dict = session.player_dict
         hand_list = []
         placed_list = []
         #check for placed cards player_dict[player][down]
-        for card in player_dict[player]['hand']:
+        for card in session.player_dict[player]['hand']:
             hand_list.append(self.card_translator(session=session, card=card))
 
-        for placed in player_dict[player]['down']:
+        for placed in session.player_dict[player]['down']:
             placed_list.append(self.card_translator(session=session, card=placed))
 
         return hand_list, placed_list
@@ -142,10 +141,10 @@ class CardServices(Cards, Deck):
     def take_card(self, session, pile):
         # if pile discard take 1
         if pile == 'discard':
-            session.player_dict[session.turns['current_turn']]['hand'].append(session.game_deck['discard_pile'].pop(-1))
+            session.player_dict[session.turns['current_turn'][-1]]['hand'].append(session.game_deck['discard_pile'].pop(-1))
         # if pile deck take 2
         elif pile == 'deck':
-            session.player_dict[session.turns['current_turn']]['hand'].append(session.game_deck['remaining_cards'].pop(-1))
+            session.player_dict[session.turns['current_turn'][-1]]['hand'].append(session.game_deck['remaining_cards'].pop(-1))
         return session
 
     def book_check(self, cards):
@@ -204,33 +203,40 @@ class PlayerServices(object):
         # place book
         # place run
         # discard
-        player_choice = str(input(f"{session.turns['current_turn'][0]}" + self.pc.PLAYER_FULL_CHOICES))
-        if player_choice == '1' or player_choice == '[1]':
-            pile = 'deck'
-            self.cs.take_card(session=session, pile=pile)
-        elif player_choice == '2' or player_choice == '[2]':
-            pile = 'discard'
-            if self.cs.discard_active(session=session):
+        if session.turns['stage'] == 1:
+            player_choice = str(input(f"{session.turns['current_turn'][0]}" + self.pc.PLAYER_CHOICES_DRAW))
+            if player_choice == '1' or player_choice == '[1]':
+                pile = 'deck'
                 self.cs.take_card(session=session, pile=pile)
+            elif player_choice == '2' or player_choice == '[2]':
+                pile = 'discard'
+                if self.cs.discard_active(session=session):
+                    self.cs.take_card(session=session, pile=pile)
+                else:
+                    print(self.pc.DISCARD_DEAD)
+                    self._player_choice(session=session)
             else:
-                print(self.pc.DISCARD_DEAD)
-                self._player_choice(session=session)
-        elif player_choice == '3' or player_choice == '[3]':
-            cards = self.player_card_choice(session=session)
-            # will need to parse the cards
-            self.cs.book_check(cards=cards)
-            # book fails player is notified
-            # book succeeds player is notified and scoring
-        elif player_choice == '4' or player_choice == '[4]':
-            cards = self.player_card_choice(session=session)
-            # will need to parse the cards
-            self.cs.run_check(cards=cards)
-            # book fails player is notified
-            # book succeeds player is notified and scoring
-        elif player_choice == '5' or player_choice == '[5]':
-            self.cs.discard_card(session=session)
+                print(self.pc.TRY_AGAIN)
+        elif session.turns['stage'] == 2:
+            player_choice = str(input(f"{session.turns['current_turn'][0]}" + self.pc.PLAYER_CHOICES_PLACE))
+            if player_choice == '1' or player_choice == '[1]':
+                cards = self.player_card_choice(session=session)
+                # will need to parse the cards
+                self.cs.book_check(cards=cards)
+                # book fails player is notified
+                # book succeeds player is notified and scoring
+            elif player_choice == '2' or player_choice == '[2]':
+                cards = self.player_card_choice(session=session)
+                # will need to parse the cards
+                self.cs.run_check(cards=cards)
+                # book fails player is notified
+                # book succeeds player is notified and scoring
+            else:
+                print(self.pc.TRY_AGAIN)
         else:
-            print(self.pc.TRY_AGAIN)
+            print(self.pc.PLAYER_CHOICES_DISCARD)
+            self.cs.discard_card(session=session)
+
 
     def player_card_choice(self, session):
         # player chooses a number of cards to lay down as part of a book or a run
@@ -280,23 +286,31 @@ class GameServices(object):
         print(self.pc.SEPARATOR)
 
         for player in player_dict:
-            print(self.pc.PLAYER + f':: {player}')
-            hand, down = self.cs.display_cards(session=session, player=player)
-            print(self.pc.HAND + f':: {hand}')
-            print(self.pc.DOWN + f':: {down}')
-            print(self.pc.SEPARATOR)
+            self.display_hand(player, session)
+
+    def display_hand(self, player, session):
+        print(self.pc.PLAYER + f':: {player}')
+        hand, down = self.cs.display_cards(session=session, player=player)
+        print(self.pc.HAND + f':: {hand}')
+        print(self.pc.DOWN + f':: {down}')
+        print(self.pc.SEPARATOR)
 
     def display_well(self, session):
         self.cs.display_well(session=session)
 
     def turn_loop(self, session):
+        turn_stage = 1
         print(f"{session.turns['current_turn']} :")
         # check if its the first round and assign the fresh discard to the pile
         if self.cs.is_first_round(session=session):
             self.cs.first_round(session=session)
             self.cs.discard_active(session=session)
-        self.ps.player_card_choice(session=session)
-        self.ps.player_choices(session=session)
+        while turn_stage < 3:
+            self.ps.player_card_choice(session=session)
+            self.ps.player_choices(session=session)
+            self.cs.display_cards(player=session.turns['current_turn'][0], session=session)
+            self.display_hand(player=session.turns['current_turn'][0], session=session)
+            turn_stage += 1
 
         # player options
 
