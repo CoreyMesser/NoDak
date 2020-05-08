@@ -148,10 +148,21 @@ class CardServices(Cards, Deck):
         return session
 
     def book_check(self, cards):
-        return
+        is_valid = False
+        if cards[0] + 54 == cards[1]:
+            if cards[1] + 107 == cards[2]:
+                is_valid = True
+                return is_valid
+        return is_valid
 
     def run_check(self, cards):
-        return
+        is_valid = False
+        if cards[0] + 1 == cards[1]:
+            if cards[1] + 1 == cards[2]:
+                if cards[2] + 1 == cards[3]:
+                    is_valid = True
+                    return is_valid
+        return is_valid
 
     def is_first_round(self, session):
         isfirst = False
@@ -299,18 +310,18 @@ class GameServices(object):
         self.cs.display_well(session=session)
 
     def turn_loop(self, session):
-        turn_stage = 1
+        session.turns['stage'] = 1
         print(f"{session.turns['current_turn']} :")
         # check if its the first round and assign the fresh discard to the pile
         if self.cs.is_first_round(session=session):
             self.cs.first_round(session=session)
             self.cs.discard_active(session=session)
-        while turn_stage < 3:
+        while session.turns['stage'] < 3:
             self.ps.player_card_choice(session=session)
             self.ps.player_choices(session=session)
             self.cs.display_cards(player=session.turns['current_turn'][0], session=session)
             self.display_hand(player=session.turns['current_turn'][0], session=session)
-            turn_stage += 1
+            session.turns['stage'] += 1
 
         # player options
 
