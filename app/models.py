@@ -1,12 +1,14 @@
 class Cards(object):
     card_suit = ['♥', '♦', '♣', '♠']
-    card_ranks_num = ['2', '3', '4', '5', '6', '7', '8', '9']
+    card_ranks_num = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
     card_ranks_face = ['10', 'J', 'Q', 'K', 'A']
     card_ranks_sp = ['Jk']
     card_values = [0, 5, 10, 25, 50]
 
     card_model = {'card': {'suit': '', 'rank': ''},
                   'value': 0}
+
+    card_model = {'card_face':}
 
     cards = {0: ["#", 0],
              1: ["2♥", 5],

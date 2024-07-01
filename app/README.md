@@ -1,1 +1,117 @@
 NoDak
+
+Shanghai
+
+Rounds:
+
+(deal 10 cards)
+2 Books
+1 Book 1 Run
+2 Runs
+3 Books
+(deal 12 cards)
+2 Books 1 Run
+2 Runs 1 Book
+2 Books 2 Runs
+3 Runs
+
+Definitions:
+
+Book = 3 of a kind
+Run = 4 card straight flush
+
+Points:
+
+2-9 = 5
+10-K = 10
+A = 25
+Jk = 50
+
+Gameplay:
+
+Shuffle 3 decks of cards together well
+Deal out 10 cards to each player (for the first 4 rounds, then 12 for the last four)
+Two styles of play. Shake and Slap
+Shake - players ask before buying cards they need when it is not their turn.
+Slap - As soon as the discard is laid down first person to slap it buys it.
+When everyone is ready the top card of the remaining deck is turned over.  The game officially begins.
+The player to the left of the dealer starts with the option to take the flipped card or draw from the deck.
+Once the first player Discards for the first time Buying is now in effect for the rest of the players.
+Each Turn is made up of four phases, Draw, Place, Buy, Discard.  Place and Buy can be interchanged but Discard always ends the turn.
+
+
+Draw - On a Player’s turn they can buy the previous Player’s discard for free or take the top card off the remaining cards.  Once the top card is removed anything in the discard pile is considered dead.
+Place - Players can lay completed books or runs. Players can complete other’s Books or Runs ONLY after reaching the round’s goal.
+Discard - Player must discard a card which ends their turn.
+Buy - All Player’s have a chance to buy the discard as soon as it is laid down regardless of whether it is their turn.  However if they buy it when it is not their turn they have to take two extra cards from the top of the remaining card pile.  Players are limited to 5 outside buys per round.
+No Player can Place cards until everyone has had drawn once during the round.
+Which means if a player is dealt a hand which completes the goal of the round they cannot Place their cards until everyone has had a turn.
+Each turn Player’s must try to assemble the Round’s Goal.  Once they’ve assembled the goal they can Place their cards face up on the table and are considered “Down”. Once Down a Player must wait a turn before they can begin Placing additional cards.
+Player’s that are Down can begin Placing cards to “Complete” other Player’s Books and Runs.  See example below for sample gameplay.
+The first Player to run out of cards wins the round, everyone then tallies their points determined by the cards left in their hand.  Cards that are Down do not count toward their point total.
+Lowest scorer at the end of the game is the winner.
+While cheating is generally frowned upon during most games of any kinds we will say that it is not encouraged here but not exactly discouraged.  In the years playing we have discovered a bit of light handed subterfuge and a bit of under the table transactions have lead to heated but overall enjoyable experience.
+
+
+Gameplay Example:
+
+♦♣ ♠♥ Round 2: ♦♣ ♠♥
+1 Book 1 Run
+
+Discard Pile: 9♠
+Player 1 - Hand: 7♠, K♥, 2♦         Down: 3 Ks, 4 5 6 7♥
+Player 2 - Hand: K♠, 4♥               Down: 3 2’s, 8 9 10 J♣
+Player 3 - Hand: 2 3 4 Q Q♥, 6 7 Q♣, Q♦,      Down:
+
+Player 1 and 2 are in the game but Player 3 needs to complete her Run before she can Place her cards Down.
+
+On Player 1’s turn she Places the K in her hand into her own Book of K’s. Player 1 then Place’s the 2 in her hand into Player 2’s Book of 2’s leaving her with only the 7 remaining. Since Player 1 cannot Place it she picks up a card from the top of the deck, 5♥ and renders the 9 in the discard pile dead.  Player 1 then discards the 5 because she has already Placed one and does not see an opportunity to Place it in the future.
+
+Discard: 9(dead)
+Player 1 - Hand: 7♠        Down: 4 Ks, 4 5 6 7♥
+Player 2 - Hand: K♠, 4♥               Down: 4 2’s, 8 9 10 J♣
+Player 3 - Hand: 2 3 4 Q Q♥, 6 7 Q♣, Q♦,      Down:
+
+On Player 2’s turn she places her K into Player 1’s Book of K’s.  She cannot place her 4.  She does not want the 5♥ in the discard pile but before she draws Player 3 options to buy it.  No one else wants it so Player 3 buys the discard.
+
+Player 3 has to pick up two additional cards with the discard since it is not her turn. Leaving her with a 5 8♥, A♠.
+
+Player 3 picks up a card from the deck J♦ and discards her 4♥
+
+Discard: 9(dead)
+Player 1 - Hand: 7♠        Down: 5 Ks, 4 5 6 7♥
+Player 2 - Hand: J♦               Down: 4 2’s, 8 9 10 J♣
+Player 3 - Hand: 2 3 4 5 8 Q Q♥, 6 7 Q♣, Q♦, A♠     Down:
+
+Player 3 can now Place her Book 3Q and her Run 2 3 4 5♥.  Since this is the first time she has Placed Down she has to wait a turn to Place more cards. She picks up a card from the deck, A♦, and immediately discards it.
+
+Discard:  A♦
+Player 1 - Hand: 7♠        Down: 5 Ks, 4 5 6 7♥
+Player 2 - Hand: J♦               Down: 4 2’s, 8 9 10 J♣
+Player 3 - Hand: 8♥, 6 7♣, Q♦, A♠     Down: 3 Q’s, 2 3 4 5♥
+
+Player 1 cannot Place her 7 and does not want the A in the discard pile and draws a card from the top of the deck 5♣.  Player 1 discards their 7.
+
+Discard: 7♠
+Player 1 - Hand: 5♣        Down: 5 Ks, 4 5 6 7♥
+Player 2 - Hand: J♦               Down: 4 2’s, 8 9 10 J♣
+Player 3 - Hand: 8♥, 6 7♣, Q♦, A♠     Down: 3 Q’s, 2 3 4 5♥
+
+Player 2 cannot place her J and does not want the discarded 7.  She draws a card from the top of the deck J♥ and immediately discards it.
+
+Discard: J♥
+Player 1 - Hand: 5♣        Down: 5 Ks, 4 5 6 7♥
+Player 2 - Hand: J♦               Down: 4 2’s, 8 9 10 J♣
+Player 3 - Hand: 8♥, 6 7♣, Q♦, A♠     Down: 3 Q’s, 2 3 4 5♥
+
+Player 3 Places her 6 7♣ on the front of Player 2’s run, then her 8♥ on the end of Player 1’s Run, then Places her Q in her own Book of Q’s.  Unable to place her A she draws a card from the top of the deck, 2♠.  Player 3 places the 2 in Player 2’s Book of 2’s, and then discards the A to win the Round.
+
+Discard: J♥ (dead)
+Player 1 - Hand: 5♣        Down: 5 Ks, 4 5 6 7 8♥
+Player 2 - Hand: J♦               Down: 5 2’s, 6 7 8 9 10 J♣
+Player 3 - Hand:         Down: 4 Q’s, 2 3 4 5♥
+
+Score for Round 2
+Player 1 (5) = 5
+Player 2 (J) = 10
+Player 3 (0) = 0

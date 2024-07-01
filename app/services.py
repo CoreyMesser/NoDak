@@ -251,6 +251,9 @@ class PlayerServices(object):
 
     def player_card_choice(self, session):
         # player chooses a number of cards to lay down as part of a book or a run
+        # parse players hand and add numerical values to each card for picking
+        players_hand = session.player_dict[session.turns['current_turn'][-1]]['hand']
+
         pass
 
 
